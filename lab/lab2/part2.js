@@ -28,6 +28,13 @@ Calculate the value by using _.countBy and set your answer to variable "largeSta
 
 var data = bikeArrayClean;
 
-var largeStationList;
+// Task 1
+// _.filter(list, predicate, [context]) 
+var largeStationList = _.filter(data, function(dataEntry) { return dataEntry[3] > 20 });
+console.log(largeStationList);
 
-var largeStationCount;
+// Task 2
+// _.countBy(list, iteratee, [context])
+var largeStationCount = _.countBy(data, function(dataEntry) { return dataEntry[3] > 20 ? 'number of bike share locations with more than 20 docks': 'other'});
+console.log(largeStationCount);
+
