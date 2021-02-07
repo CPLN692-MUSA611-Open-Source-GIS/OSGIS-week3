@@ -32,6 +32,20 @@
 
 
   // clean data
+  _.each(schools, 
+    // replace for loop by _.each function (foreach)
+    function(dataEntry){
+      if (_.isString(dataEntry.ZIPCODE)) {
+        // If we have '19104 - 1234', splitting and taking the first (0th) element
+        // as an integer should yield a zip in the format above
+        split = dataEntry.ZIPCODE.split(' ');
+        normalized_zip = parseInt(split[0]);
+        dataEntry.ZIPCODE = normalized_zip;
+      }
+    })
+  console.log(schools)
+
+
   for (var i = 0; i < schools.length - 1; i++) {
     // If we have '19104 - 1234', splitting and taking the first (0th) element
     // as an integer should yield a zip in the format above
