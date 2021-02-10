@@ -80,7 +80,10 @@ Instructions: Let's bring it all together. Write a function that filters a list 
               2. a function that takes a value and returns true (to keep a number) or false (to toss it out)
 ===================== */
 
-var filter = function(array, func) {};
 
-console.log('filter success:', arraysEqual(filter([4, 11], isOdd)) === [11]);
+var filter = function(array, func) {
+    return array.filter(func)
+};
+
+console.log('filter success:', arraysEqual(filter([4, 11], isOdd), [11]));
 
