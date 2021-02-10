@@ -41,7 +41,7 @@ Instructions: Write a function that returns true if a number is odd
               Use functions "isEven" and "not" somehow in the definition.
 ===================== */
 
-var isOdd = function(num) {return num % 2 != 0};
+var isOdd = function(num) {return num % 2 !== 0};
 
 console.log('isOdd success:', isOdd(4) === false);
 
@@ -49,11 +49,28 @@ console.log('isOdd success:', isOdd(4) === false);
 Instructions: Write a function that takes a list of numbers and returns a list with only numbers above 10
 ===================== */
 
-var filterOutLessThan10 = function() {};
+var filterOutLessThan10 = function(list) {
+    return list.filter(i => i > 10)
+};
+
 // The function 'arraysEqual' (which it is also your task to define!) is necessary because
 // ([4] === [4]) is *false* in javascript(!!!)
 // Use google + stackoverflow to figure out how to define a function which returns true given two equal arrays
-function arraysEqual(arr1, arr2) { return false; }
+
+//reference:https://stackoverflow.com/questions/3115982/how-to-check-if-two-arrays-are-equal-with-javascript
+
+function arraysEqual(arr1, arr2) {
+    if (arr1 === arr2) return true;
+    if (arr1 == null || arr2 == null) return false;
+    if (arr1.length != arr2.length) return false;
+
+    for (var i = 0; i < arr1.length; i = i + 1) {
+        if (arr1[i] !== arr2[i])
+        return false;
+    }
+    return true
+}
+
 console.log('filterOutLessThan10 success:', arraysEqual(filterOutLessThan10([4, 11]), [11]));
 
 /* =====================
