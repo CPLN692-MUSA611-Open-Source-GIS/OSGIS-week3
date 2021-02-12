@@ -69,25 +69,23 @@
 
 
   //Clean zip code in schools
-  _.map(schools, function(school){
-    school.ZIPCODE = Number(String(school.ZIPCODE).substr(0,5));
-    return school;
+  _.each(schools, function(schools){
+    schools.ZIPCODE = Number(String(schools.ZIPCODE).substr(0,5));
   })
 
-  //Clean school type 
-  _.map(schools, function(school){
-    if (typeof(school.GRADE_ORG) === 'number') {  // if number
-      school.HAS_KINDERGARTEN = school.GRADE_LEVEL < 1;
-      school.HAS_ELEMENTARY = 1 < school.GRADE_LEVEL < 6;
-      school.HAS_MIDDLE_SCHOOL = 5 < school.GRADE_LEVEL < 9;
-      school.HAS_HIGH_SCHOOL = 8 < school.GRADE_LEVEL < 13;
+  //Clean school type  
+  _.each(schools, function(schools){
+    if (typeof(schools.GRADE_ORG) === 'number') {  // if number
+      schools.HAS_KINDERGARTEN = schools.GRADE_LEVEL < 1;
+      schools.HAS_ELEMENTARY = 1 < schools.GRADE_LEVEL < 6;
+      schools.HAS_MIDDLE_SCHOOL = 5 < schools.GRADE_LEVEL < 9;
+      schools.HAS_HIGH_SCHOOL = 8 < schools.GRADE_LEVEL < 13;
     } else {  // otherwise (in case of string)
-      school.HAS_KINDERGARTEN = school.GRADE_LEVEL.toUpperCase().indexOf('K') >= 0;
-      school.HAS_ELEMENTARY = school.GRADE_LEVEL.toUpperCase().indexOf('ELEM') >= 0;
-      school.HAS_MIDDLE_SCHOOL = school.GRADE_LEVEL.toUpperCase().indexOf('MID') >= 0;
-      school.HAS_HIGH_SCHOOL = school.GRADE_LEVEL.toUpperCase().indexOf('HIGH') >= 0;
+      schools.HAS_KINDERGARTEN = schools.GRADE_LEVEL.toUpperCase().indexOf('K') >= 0;
+      schools.HAS_ELEMENTARY = schools.GRADE_LEVEL.toUpperCase().indexOf('ELEM') >= 0;
+      schools.HAS_MIDDLE_SCHOOL = schools.GRADE_LEVEL.toUpperCase().indexOf('MID') >= 0;
+      schools.HAS_HIGH_SCHOOL = schools.GRADE_LEVEL.toUpperCase().indexOf('HIGH') >= 0;
     }
-    return school;
   })
 
 
