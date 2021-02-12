@@ -18,6 +18,8 @@ Using underscore functions, generate a list of all bike share docks that are gre
 way to do this is by using _.filter, but you can try other solutions as well. Set your answer to
 variable "largeStationList".
 
+
+
 Reminder: you can (and should) use `console.log` to test your solutions!
 
 ## Task 2
@@ -26,8 +28,23 @@ Let's say we only care about the final count of bike share locations with more t
 Calculate the value by using _.countBy and set your answer to variable "largeStationCount".
 ===================== */
 
+//const _ = require("./underscore");
+
 var data = bikeArrayClean;
+
+var MoreThanTwenty = (onestation) => {
+    return onestation[3]>20
+}
+
+console.log(MoreThanTwenty(data[0]))
+
+var largeStationList = _.filter(data, MoreThanTwenty)
+
+
+console.log('largestationlist', largeStationList)
 
 var largeStationList;
 
-var largeStationCount;
+var largeStationCount = _.countBy(data, MoreThanTwenty);
+
+console.log(largeStationCount)
