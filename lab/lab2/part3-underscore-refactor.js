@@ -59,24 +59,74 @@
 
   //console.log(schools)
 
-  // let test = _.map(schools, (t) => {return t.ZIPCODE})
-  // console.log(test)
 
   var test2 = [schools[2], schools[3]]
   console.log(test2)
 
   var testdata = [schools[0], schools[1]]
  
-  //normalize Zip code
-  let normalizeZip = _.map(testdata, (zip) => {
-    if (typeof zip.ZIPCODE === 'string') {
-      split = zip.ZIPCODE.split(' ');
-      normalized_zip = parseInt(split[0]);
-      zip.ZIPCODE = normalized_zip
+  let normalizeZip = function(data) {
+    for (var i = 0; i < data.length; i = i + 1) {
+      if (typeof data[i].ZIPCODE === 'string') {
+        split = data[i].ZIPCODE.split(' ');
+        normalized_zip = parseInt(split[0]);
+        data[i].ZIPCODE =normalized_zip
+      }
     }
-  });
+    return data
+  }
 
-  console.log(testdata)
+ 
+  //School Type
+  let isKindergarten = (data) => {
+    for (var i = 0; i < data.length; i++) {
+      if (typeof data[i].GRADE_ORG === 'number') {
+        data[i].HAS_KINDERGARTEN = data[i].GRADE_LEVEL < 1;
+      } else {
+        data[i].HAS_KINDERGARTEN = data[i].GRADE_LEVEL.toUpperCase().indexOf('K') >= 0;
+      }
+    }
+    return data
+  }
+
+  let isElementary = (data) => {
+    for (var i = 0; i < data.length; i++) {
+      if(typeof data[i].GRADE_ORG === 'number') {
+        schools[i].HAS_ELEMENTARY = 1 < schools[i].GRADE_LEVEL < 6;
+      } else {
+        schools[i].HAS_ELEMENTARY = schools[i].GRADE_LEVEL.toUpperCase().indexOf('ELEM') >= 0;
+      }
+    }
+    return data
+  }
+
+  let isMiddle = (data) => {
+    for (var i = 0; i < data.length; i++) {
+      if(typeof data[i].GRADE_ORG === 'number') {
+        data.HAS_MIDDLE_SCHOOL = 5 < schools[i].GRADE_LEVEL < 9;
+      } else {
+        data.HAS_MIDDLE_SCHOOL = schools[i].GRADE_LEVEL.toUpperCase().indexOf('MID') >= 0;
+      }
+    }
+    return data
+  }
+
+  let isHigh = (data) => {
+    for (var i = 0; i < data.length; i++) {
+      if(typeof data[i].GRADE_ORG === 'number') {
+        data.HAS_HIGH_SCHOOL = 8 < schools[i].GRADE_LEVEL < 13;
+      } else {
+        data.HAS_HIGH_SCHOOL = schools[i].GRADE_LEVEL.toUpperCase().indexOf('HIGH') >= 0;
+      }
+    }
+    return data
+  }
+
+  var testresult = normalizeZip(isElementary(testdata))
+
+  console.log(testresult)
+
+
 
 
 
