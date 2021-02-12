@@ -7,9 +7,12 @@ Instructions: "Write a function that adds one to the number provided"
 Example: "plusOne(2) should return 3"
 ===================== */
 
-var plusOne = function() {};
+var plusOne = function(num) {
 
-console.log('plusOne success:', plusOne(99) === 100);
+    return num + 1
+    };
+    
+    console.log('plusOne success:', plusOne(99) === 100);
 
 /* =====================
 Instructions: "Write a function, age, that takes a birth year and returns an age in years."
@@ -17,7 +20,9 @@ Instructions: "Write a function, age, that takes a birth year and returns an age
 Example: "age(2000) should return 20"
 ===================== */
 
-var age = function(birth) {};
+var age = function(birth) {
+    return 2020- birth
+};
 
 console.log('age success:', age(1971) === 49);
 
@@ -26,7 +31,9 @@ Instructions: "Write a function that returns true for numbers over 9000 and fals
 Example: "over9000(22) should return false"
 ===================== */
 
-var over9000 = function() {};
+var over9000 = function(number) {
+    return number > 9000
+};
 
 console.log('over9000 success:', over9000(9001) === true && over9000(12) === false);
 
@@ -35,7 +42,9 @@ Instructions: "Write a function that returns the value of an object at a specifi
 Example: "valueAtKey({'name': 'Nathan'}, 'name') should return 'Nathan'"
 ===================== */
 
-var valueAtKey = function() {};
+var valueAtKey = function(object, key) {
+    return object[key]
+};
 
 console.log('valueAtKey success:', valueAtKey({'foo': 'bar'}, 'foo') === 'bar');
 
@@ -46,16 +55,20 @@ Remember: The standard mathematical expression for such a function is y=mx+b;
           'm' is the slope, 'b' is the y intercept
 ===================== */
 
-var y = function() {};
-
-console.log('y success:', y(12, 1, 12) === 24);
+var y = function(m,x,b) {
+    return m*x + b
+    };
+    
+    console.log('y success:', y(12, 1, 12) === 24);
 
 /* =====================
 Instructions: "Write a function which counts the number of times a value occurs in an array "
 Example: "countItem(['a', 'b', 'a'], 'a') should return 2"
 ===================== */
+var countItem = function(array, item) {
+    return array.filter(x => x == item).length
 
-var countItem = function() {};
+};
 
 console.log('countItem success:', countItem([1, 2, 3, 4, 5, 4, 4], 4) === 3);
 
