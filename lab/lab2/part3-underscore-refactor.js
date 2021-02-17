@@ -95,9 +95,10 @@
 
   function styler (filtered) {
     // Constructing the styling  options for our map
-    if (filtered.HAS_HIGH_SCHOOL){
+    var color
+    if (isHigh(filtered)){
       color = '#0000FF';
-    } else if (filtered.HAS_MIDDLE_SCHOOL) {
+    } else if (isMiddle(filtered)) {
       color = '#00FF00';
     } else {
       color = '##FF0000';
@@ -110,8 +111,10 @@
       .addTo(map);
   }
 
+  var color
+
   // main loop
-  var color;
+  
   (filtered_data.filter(isPublic)).map(styler)
 
 })();
