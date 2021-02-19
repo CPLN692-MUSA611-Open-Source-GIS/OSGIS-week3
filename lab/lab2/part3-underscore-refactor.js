@@ -32,14 +32,18 @@
 
 
   // clean data
+  /*
   for (var i = 0; i < schools.length - 1; i++) {
     // If we have '19104 - 1234', splitting and taking the first (0th) element
     // as an integer should yield a zip in the format above
+    
     if (typeof schools[i].ZIPCODE === 'string') {
       split = schools[i].ZIPCODE.split(' ');
       normalized_zip = parseInt(split[0]);
       schools[i].ZIPCODE = normalized_zip;
     }
+    
+    //schools[i].ZIPCODE = _.map(schools, function(data){return Number(String(data['ZIPCODE']).substr(0,5))})[i];
 
     // Check out the use of typeof here — this was not a contrived example.
     // Someone actually messed up the data entry
@@ -55,7 +59,37 @@
       schools[i].HAS_HIGH_SCHOOL = schools[i].GRADE_LEVEL.toUpperCase().indexOf('HIGH') >= 0;
     }
   }
+  */
 
+  //var test = [[1,2],[3,4],[5,6]];
+  //_.map(test, function(num){
+  //  num[1] = num[1]*2;
+  //  return num
+  //})
+
+
+  //Clean zip code in schools
+  _.each(schools, function(schools){
+    schools.ZIPCODE = Number(String(schools.ZIPCODE).substr(0,5));
+  })
+
+  //Clean school type  
+  _.each(schools, function(schools){
+    if (typeof(schools.GRADE_ORG) === 'number') {  // if number
+      schools.HAS_KINDERGARTEN = schools.GRADE_LEVEL < 1;
+      schools.HAS_ELEMENTARY = 1 < schools.GRADE_LEVEL < 6;
+      schools.HAS_MIDDLE_SCHOOL = 5 < schools.GRADE_LEVEL < 9;
+      schools.HAS_HIGH_SCHOOL = 8 < schools.GRADE_LEVEL < 13;
+    } else {  // otherwise (in case of string)
+      schools.HAS_KINDERGARTEN = schools.GRADE_LEVEL.toUpperCase().indexOf('K') >= 0;
+      schools.HAS_ELEMENTARY = schools.GRADE_LEVEL.toUpperCase().indexOf('ELEM') >= 0;
+      schools.HAS_MIDDLE_SCHOOL = schools.GRADE_LEVEL.toUpperCase().indexOf('MID') >= 0;
+      schools.HAS_HIGH_SCHOOL = schools.GRADE_LEVEL.toUpperCase().indexOf('HIGH') >= 0;
+    }
+  })
+
+
+/*
   // filter data
   var filtered_data = [];
   var filtered_out = [];
@@ -82,6 +116,48 @@
   }
   console.log('Included:', filtered_data.length);
   console.log('Excluded:', filtered_out.length);
+*/
+
+  //Filter data
+  // _.filter(data, function(station){ return station[3] > 20;})
+  var filtered_data = _.filter(schools, function(school){
+    isOpen = school.ACTIVE.toUpperCase() == 'OPEN';
+    isPublic = (school.TYPE.toUpperCase() !== 'CHARTER' ||
+                school.TYPE.toUpperCase() !== 'PRIVATE');
+    isSchool = (school.HAS_KINDERGARTEN ||
+                school.HAS_ELEMENTARY ||
+                school.HAS_MIDDLE_SCHOOL ||
+                school.HAS_HIGH_SCHOOL);
+    meetsMinimumEnrollment = school.ENROLLMENT > minEnrollment;
+    meetsZipCondition = acceptedZipcodes.indexOf(school.ZIPCODE) >= 0;
+    filter_condition = (isOpen &&
+                        isSchool &&
+                        meetsMinimumEnrollment &&
+                        !meetsZipCondition);
+    return filter_condition;
+  })
+  var filtered_out = _.filter(schools, function(school){
+    isOpen = school.ACTIVE.toUpperCase() == 'OPEN';
+    isPublic = (school.TYPE.toUpperCase() !== 'CHARTER' ||
+                school.TYPE.toUpperCase() !== 'PRIVATE');
+    isSchool = (school.HAS_KINDERGARTEN ||
+                school.HAS_ELEMENTARY ||
+                school.HAS_MIDDLE_SCHOOL ||
+                school.HAS_HIGH_SCHOOL);
+    meetsMinimumEnrollment = school.ENROLLMENT > minEnrollment;
+    meetsZipCondition = acceptedZipcodes.indexOf(school.ZIPCODE) >= 0;
+    filter_condition = (isOpen &&
+                        isSchool &&
+                        meetsMinimumEnrollment &&
+                        !meetsZipCondition);
+    return !filter_condition;
+  })
+
+  console.log('Included:', filtered_data.length);
+  console.log('Excluded:', filtered_out.length);
+  
+
+
 
   // main loop
   var color;
