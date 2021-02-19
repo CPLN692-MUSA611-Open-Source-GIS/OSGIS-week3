@@ -28,6 +28,12 @@ Calculate the value by using _.countBy and set your answer to variable "largeSta
 
 var data = bikeArrayClean;
 
-var largeStationList;
+var largeStation = (stations) => {
+    return _.last(stations) > 20
+};
 
-var largeStationCount;
+var largeStationList = _.filter(data, largeStation);
+console.log('List of bike share docks which are greater than 20 :', largeStationList)
+
+var largeStationCount = _.countBy(data, function(largeStation) { return _.last(largeStation) > 20 ? 'is_large':'not_large'})['is_large'];
+console.log('The number of large stations: ', largeStationCount) 
