@@ -67,10 +67,10 @@ var filterOutLessThan10 = function(array) {
     var cleaned_array=[];
     for (i=0; i < array.length; i++){
         if (array[i] > 10){
-            cleaned_array.push(array[i])
+            cleaned_array.push(array[i]);
         }
     }
-    return cleaned_array
+    return cleaned_array;
 };
 
 console.log(filterOutLessThan10([4, 11]), [11])
@@ -95,7 +95,13 @@ Instructions: Let's bring it all together. Write a function that filters a list 
 ===================== */
 
 var filter = function(array, func) { 
-
+    var cleanedArrayB=[];
+    for (i=0; i < array.length; i++){
+        if (func(i)=== true){
+            cleanedArrayB.push(i);
+        }
+    }
+    return cleanedArrayB;
 };
 console.log('filter success:', arraysEqual(filter([4, 11], isOdd)) === [11]);
 
