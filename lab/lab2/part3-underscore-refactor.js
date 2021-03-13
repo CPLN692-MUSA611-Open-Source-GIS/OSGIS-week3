@@ -1,4 +1,4 @@
-//(function(){
+(function(){
 
   var map = L.map('map', {
     center: [39.9522, -75.1639],
@@ -111,7 +111,14 @@
 })();
 */
 
-
+//functions
+var zipcode = function(school){
+  if (typeof school.ZIPCODE === 'string') {
+    var split = school.ZIPCODE.split(' ');
+    var normalized_zip = parseInt(split[0]);
+    school.ZIPCODE = normalized_zip;
+  }
+}
 
 var hasKinder = function(school){
   if (typeof school.GRADE_ORG === 'number') {  // if number
@@ -124,7 +131,7 @@ var hasKinder = function(school){
 
 var hasElem = function(school){
   if (typeof school.GRADE_ORG === 'number') {  // if number
-    return school.GRADE_LEVEL < 6 && school.GRADE_LEVEL >1
+    return (1< school.GRADE_LEVEL && school.GRADE_LEVEL< 6)
   } 
   else {  // otherwise (in case of string)
     return school.GRADE_LEVEL.toUpperCase().indexOf('ELEM') >= 0;
@@ -133,7 +140,7 @@ var hasElem = function(school){
 
 var hasMid = function(school){
   if (typeof school.GRADE_ORG === 'number') {  // if number
-    return school.GRADE_LEVEL < 9 && school.GRADE_LEVEL >5
+    return (5< school.GRADE_LEVEL && school.GRADE_LEVEL< 9)
   } 
   else {  // otherwise (in case of string)
     return school.GRADE_LEVEL.toUpperCase().indexOf('MID') >= 0;
@@ -142,10 +149,10 @@ var hasMid = function(school){
 
 var hasHigh = function(school){
   if (typeof school.GRADE_ORG === 'number') {  // if number
-    return school.GRADE_LEVEL < 13 && school.GRADE_LEVEL >8
+    return (8 < school.GRADE_LEVEL && school.GRADE_LEVEL< 13)
   } 
   else {  // otherwise (in case of string)
-    return school.GRADE_LEVEL.toUpperCase().indexOf('ELEM') >= 0;
+    return school.GRADE_LEVEL.toUpperCase().indexOf('HIGH') >= 0;
   }  
 }
 
@@ -155,8 +162,8 @@ var isOpen = function(school){
 }
 
 var isPublic = function(school){
-  return (schools.TYPE.toUpperCase() !== 'CHARTER' ||
-         schools[i].TYPE.toUpperCase() !== 'PRIVATE')
+  return (school.TYPE.toUpperCase() !== 'CHARTER' ||
+          school.TYPE.toUpperCase() !== 'PRIVATE')
 }
 
 var isSchool = function(school){
@@ -164,7 +171,7 @@ var isSchool = function(school){
 }
 
 var meetsZipCondition = function(school) {
-  acceptedZipcodes.indexOf(school.ZIPCODE) >= 0;
+  return acceptedZipcodes.indexOf(school.ZIPCODE) >= 0;
 }
 
 var meetsMinimumEnrollment = function(school){
@@ -181,6 +188,11 @@ var filter_condition = function(school){
   }
 }
 
+
+// clean and fliter data
+schools = _.each(_.initial(schools),zipcode)
+
+
 filtered_data = _.filter(schools, filter_condition )
 filtered_out = _.difference(schools, filtered_data);
 
@@ -190,16 +202,16 @@ console.log('Excluded_', filtered_out.length);
 
 
 // Constructing the styling  options for our map
-_.map(filtered_data, function(school){
+_.each(_.initial(filtered_data), function(school){
   var color;
-  if (hasHigh(school) === true){
-    color = '#0000FF';
+  if (hasHigh(school)){
+    color = '#0000FF'; // blue
   }
-  else if (hasMid(school) === true){
-    color = '#00FF00';
+  else if (hasMid(school)){
+    color = '#00FF00'; // green
   }
   else{
-    color = '##FF0000';
+    color = '#FF0000'; // red
   };
   var pathOpts = {'radius': school.ENROLLMENT / 30,
   'fillColor': color};
@@ -209,28 +221,4 @@ _.map(filtered_data, function(school){
   
 })
 
-/*
-for (var i = 0; i < filtered_data.length - 1; i++) {
-  isOpen = filtered_data[i].ACTIVE.toUpperCase() == 'OPEN';
-  isPublic = (filtered_data[i].TYPE.toUpperCase() !== 'CHARTER' ||
-              filtered_data[i].TYPE.toUpperCase() !== 'PRIVATE');
-  meetsMinimumEnrollment = filtered_data[i].ENROLLMENT > minEnrollment;
-
-  // Constructing the styling  options for our map
-  if (filtered_data[i].HAS_HIGH_SCHOOL){
-    color = '#0000FF';
-  } else if (filtered_data[i].HAS_MIDDLE_SCHOOL) {
-    color = '#00FF00';
-  } else {
-    color = '##FF0000';
-  }
-  // The style options
-  var pathOpts = {'radius': filtered_data[i].ENROLLMENT / 30,
-                  'fillColor': color};
-  L.circleMarker([filtered_data[i].Y, filtered_data[i].X], pathOpts)
-    .bindPopup(filtered_data[i].FACILNAME_LABEL)
-    .addTo(map);
-}
-*/
-
-//})();
+})();
